@@ -1,20 +1,16 @@
+# main.py
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.templating import Jinja2Templates
+from app.controllers import auth_controller, post_controller
+from config import engine, Base
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allow_headers=["*"],
-)
-
-templates = Jinja2Templates(directory="templates")
+app.include_router(auth_controller.router, prefix="/auth")
+app.include_router(post_controller.router, prefix="/posts")
 
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
+def read_root():
+    return {"message": "Welcome to the FastAPI application"}
