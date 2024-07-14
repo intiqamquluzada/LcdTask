@@ -8,7 +8,6 @@ class UserResponse(BaseModel):
     id: int
     email: EmailStr
 
-# schemas/post.py
 from pydantic import BaseModel
 
 class PostCreate(BaseModel):
